@@ -9,6 +9,11 @@ const list = document.getElementById('todo-list')
 const itemCountSpan = document.getElementById('item-count')
 const uncheckedCountSpan = document.getElementById('unchecked-count')
 
+function updateCounts() {
+  itemCountSpan.textContent = list.getElementsByTagName("li").length
+  uncheckedCountSpan.textContent = list.getElementsByTagName("li").length
+}
+
 /*
   When newTodo is clicked, we need to:
   1) Fetch the task string from the button
@@ -20,9 +25,21 @@ const uncheckedCountSpan = document.getElementById('unchecked-count')
 function newTodo() {
   var todo = prompt('Enter your task')
   var li = document.createElement("li");
-  li.appendChild(document.createTextNode(todo));
+  var text = document.createTextNode(todo)
+  text.className = classNames.TODO_TEXT
+  li.appendChild(text)
+
+  // EXTRA: add a delete button
+  var button = document.createElement('button');
+  button.className = classNames.TODO_DELETE;
+  button.innerText = 'Delete';
+  button.onclick = function() { // remove list item here
+    this.parentElement.remove()
+    updateCounts()
+  };
+  li.appendChild(button)
+
   list.appendChild(li);
 
-  itemCountSpan.textContent = list.getElementsByTagName("li").length
-  uncheckedCountSpan.textContent = list.getElementsByTagName("li").length
+  updateCounts()
 }
